@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <title>Ultimate Life Planner</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --success: #00b894;
+            --danger: #d63031;
+            --dark: #2d3436;
+        }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex; justify-content: center; padding: 20px;
+        }
+        .container { 
+            background: white; padding: 30px; border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            width: 100%; max-width: 500px; border: 2px solid var(--primary);
+        }
+        h1 { color: var(--primary); text-align: center; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
+        .grid-input { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .input-group { display: flex; flex-direction: column; }
+        label { font-size: 12px; font-weight: bold; color: var(--dark); margin-bottom: 5px; }
+        input { 
+            padding: 10px; border: 1px solid #dfe6e9; border-radius: 8px; 
+            transition: 0.3s; font-size: 14px;
+        }
+        input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 8px var(--secondary); }
+        button { 
+            width: 100%; margin-top: 25px; padding: 15px; 
+            background: var(--primary); color: white; border: none; 
+            border-radius: 10px; font-size: 18px; font-weight: bold;
+            cursor: pointer; transition: 0.4s;
+        }
+        button:hover { background: var(--dark); transform: translateY(-3px); }
+        #final-report { 
+            margin-top: 25px; padding: 20px; border-radius: 12px; 
+            display: none; animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .stat-line { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px dashed #ccc; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 Life Planner</h1>
+    
+    <div class="grid-input">
+        <div class="input-group">
+            <label>Pura Naam:</label>
+            <input type="text" id="userName" placeholder="">
+        </div>
+        <div class="input-group">
+            <label>Total Income (₹):</label>
+            <input type="number" id="income" placeholder="">
+        </div>
+        <div class="input-group">
+            <label>🏠 Room Rent:</label>
+            <input type="number" id="rent" placeholder="0">
+        </div>
+        <div class="input-group">
+            <label>🍱 Food/Grocery:</label>
+            <input type="number" id="food" placeholder="0">
+        </div>
+        <div class="input-group">
+            <label>⚡ Bijli/Internet:</label>
+            <input type="number" id="bills" placeholder="0">
+        </div>
+        <div class="input-group">
+            <label>🎬 Masti/Movies:</label>
+            <input type="number" id="fun" placeholder="0">
+        </div>
+        <div class="input-group">
+            <label>🏥 Health/EMI:</label>
+            <input type="number" id="health" placeholder="0">
+        </div>
+        <div class="input-group">
+            <label>📈 Investment Goal (%):</label>
+            <input type="number" id="goal" placeholder="20">
+        </div>
+    </div>
+
+    <button onclick="generateReport()">Analyze My Life 🔍</button>
+
+    <div id="final-report"></div>
+</div>
+
+<script>
+    function generateReport() {
+        let name = document.getElementById('userName').value || "User";
+        let income = parseFloat(document.getElementById('income').value) || 0;
+        let rent = parseFloat(document.getElementById('rent').value) || 0;
+        let food = parseFloat(document.getElementById('food').value) || 0;
+        let bills = parseFloat(document.getElementById('bills').value) || 0;
+        let fun = parseFloat(document.getElementById('fun').value) || 0;
+        let health = parseFloat(document.getElementById('health').value) || 0;
+        let goalPercent = parseFloat(document.getElementById('goal').value) || 0;
+
+        let totalExp = rent + food + bills + fun + health;
+        let savings = income - totalExp;
+        let targetSavings = (income * goalPercent) / 100;
+
+        let report = document.getElementById('final-report');
+        report.style.display = "block";
+        
+        let statusColor = savings >= targetSavings ? "#d1ecf1" : "#f8d7da";
+        let message = savings >= targetSavings ? "✅ Wah! Aap financial King hain." : "⚠️ Warning: Kharch kam kariye!";
+        
+        report.style.backgroundColor = statusColor;
+        report.innerHTML = `
+            <h3>Analysis for ${name}</h3>
+            <div class="stat-line"><span>Kul Kharch:</span> <span>₹${totalExp}</span></div>
+            <div class="stat-line"><span>Bachat:</span> <span>₹${savings}</span></div>
+            <div class="stat-line"><span>Target Saving:</span> <span>₹${targetSavings}</span></div>
+            <hr>
+            <p style="text-align:center; font-weight:bold;">${message}</p>
+        `;
+    }
+</script>
+
+</body>
+</html>
